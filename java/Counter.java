@@ -3,22 +3,21 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinPool; // ForkJoinPool für parallele Verarbeitung von Aufgaben
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-// Parameter: Ordnerpfad, regulärer Ausdruck zum Dateityp, Threadzahl.
-// Ich würde empfehlen ".*\.java" zu verwenden
+
 public class Counter {
 
 	public static void main(String[] args) throws Exception {
-		if (args.length != 3) throw new IllegalArgumentException("Aufruf: Counter <Ordner> <Regex> <Threads>");
+		if (args.length != 3) throw new IllegalArgumentException("Aufruf: Counter <Ordner> <Regex> <Threads>"); // Threads als neues Argument
 
 		long startTime = System.nanoTime();
 
 		long totalLines;
-		try (ForkJoinPool pool = new ForkJoinPool(Integer.parseInt(args[2]))) {
-			totalLines = pool.submit(() -> countLinesInAllFiles(args[0], args[1])).get();
+		try (ForkJoinPool pool = new ForkJoinPool(Integer.parseInt(args[2]))) {               // Erstellt einen ForkJoinPool mit der angegebenen Threadzahl
+			totalLines = pool.submit(() -> countLinesInAllFiles(args[0], args[1])).get();    // pool.submit reicht die Aufgabe an den ForkJoinPool weiter und wartet auf das Ergebnis
 		}
 
 		long endTime = System.nanoTime();
