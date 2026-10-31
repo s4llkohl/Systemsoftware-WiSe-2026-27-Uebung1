@@ -3,19 +3,23 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.ForkJoinPool;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-// Das Programm erwartet als Parameter zuerst den Dateipfad, danach eine regular expression zum Datentyp.
+// Parameter: Ordnerpfad, regulärer Ausdruck zum Dateityp, Threadzahl.
 // Ich würde empfehlen ".*\.java" zu verwenden
 public class Counter {
 
-	public static void main(String[] args) throws IOException {
-		assert (args.length == 2);
+	public static void main(String[] args) throws Exception {
+		if (args.length != 3) throw new IllegalArgumentException("Aufruf: Counter <Ordner> <Regex> <Threads>");
 
 		long startTime = System.nanoTime();
 
-		long totalLines = countLinesInAllFiles(args[0], args[1]);
+		long totalLines;
+		try (ForkJoinPool pool = new ForkJoinPool(Integer.parseInt(args[2]))) {
+			totalLines = pool.submit(() -> countLinesInAllFiles(args[0], args[1])).get();
+		}
 
 		long endTime = System.nanoTime();
 
@@ -35,7 +39,7 @@ public class Counter {
 		Pattern pattern = Pattern.compile(regex);
 
 		try (Stream<Path> paths = Files.walk(Paths.get(folderPath))) {
-			return paths
+			return paths.toList().parallelStream() // verteilt die Dateien auf die Threads des eigenen Pools
 					.filter(Files::isRegularFile)
 					.filter(path -> pattern.matcher(path.toString()).matches())
 					.mapToLong(path -> {
@@ -45,7 +49,7 @@ public class Counter {
 							throw new UncheckedIOException(e);
 						}
 					})
-					.sum();
+					.sum(); // führt die einzelnen Zeilenzahlen sicher zusammen.
 		}
 	}
 }
