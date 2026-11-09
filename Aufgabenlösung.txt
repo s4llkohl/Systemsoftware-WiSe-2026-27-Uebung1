@@ -1,0 +1,41 @@
+Aufgabe 1
+Ein Programm ist eine ausführbare Datei. Wenn man ein Programm ausführt wird es zum Prozess und kommt in den Arbeitsspeicher. Ein Prozess besitzt einen eigenen Adreßraum und Systemressourcen. Ein Prozess kann aus mehreren Kontrollsträngen bestehen, die man Threads nennt. Threads teilen sich die Ressourcen des Prozesses.
+
+Aufgabe 2
+a)Jedes Programm hat einen seuquentiellen Anteil, also einen Teil, der nicht gleichzeitig von mehreren Threads ausgeführt werden kann. Daher lässt sich ein Prozess nur bis zur durch den sequentiellen Anteil vorgegebenen Grenze beschleunigen.
+
+b)  Anteil 25%: 2 Kerne: 0.25+0.75/2=0.625
+		4 Kerne: 0.4375
+		8 Kerne: 0.34375
+		16 Kerne: 0.296875
+    Anteil 50%: 2 Kerne: 0.75
+		4 Kerne: 0.625
+		8 Kerne: 0.5625
+		16 Kerne: 0.53125
+    Anteil 75%: 2 Kerne: 0.875
+		4 Kerne: 0.8125
+		8 Kerne: 0.78125
+		16 Kerne: 0.765625
+
+Aufgabe 3:
+Nicht parallelisiert mit warmem chache:
+Anzahl Zeilen: 1916
+Benötigte Zeit: 1380.293283 ms
+2 Threads:
+Anzahl Zeilen: 1916
+Benötigte Zeit: 1381.885132 ms
+4 Threads:
+Anzahl Zeilen: 1916
+Benötigte Zeit: 1370.135551 ms
+32 Threads:
+Anzahl Zeilen: 1916
+Benötigte Zeit: 1379.079332 ms
+
+
+Es gibt so gut wie keinen Speedup durch den Parallelismus, vermutlich, weil es nicht genung files gibt und dadurch kaum Parallelisiert wird. Das liegt natürlich auch daran, dass wir nicht innerhalb von Dateien parallelisiert haben.
+
+
+
+
+
+
