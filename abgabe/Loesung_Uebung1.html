@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><title>Systemsoftware Übung 1</title>
+<style>
+ body{font-family:"Segoe UI",Arial,sans-serif;font-size:11pt;line-height:1.45;margin:2cm;color:#111}
+ h1{font-size:16pt} h2{font-size:13pt;margin-top:20px;border-bottom:1px solid #999}
+ table{border-collapse:collapse;margin:8px 0} td,th{border:1px solid #888;padding:3px 10px;text-align:right}
+ th{background:#eee} td:first-child,th:first-child{text-align:left}
+ code{font-family:Consolas,monospace;font-size:10pt} @page{margin:0}
+</style></head><body>
+<h1>Systemsoftware WiSe 2026/27 – Übung 1</h1>
+<p>Name: Justin Reider &nbsp;&nbsp; Matrikelnummer: 1751840</p>
+
+<h2>Aufgabe 1</h2>
+<p><b>Programm:</b> Ein Programm ist eine passive Folge von Anweisungen, die als Datei gespeichert ist. Wird es ausgeführt, entsteht daraus ein Prozess.</p>
+<p><b>Prozess:</b> Ein Prozess ist ein Programm in Ausführung. Er hat einen eigenen Adressraum und eigene Ressourcen (Speicher, geöffnete Dateien) und enthält mindestens einen Thread.</p>
+<p><b>Thread:</b> Ein Thread ist ein Ausführungsstrang innerhalb eines Prozesses. Er hat einen eigenen Befehlszähler und Stack und teilt sich Adressraum und Ressourcen mit den anderen Threads desselben Prozesses.</p>
+
+<h2>Aufgabe 2</h2>
+<p><b>a)</b> Jedes Programm hat einen sequentiellen Anteil, der nicht parallelisiert werden kann. Er bestimmt die minimale Laufzeit, egal wie viele Kerne es gibt. Dazu kommen Overhead für Erzeugung und Synchronisation der Threads und gemeinsam genutzte Ressourcen wie Speicher und I/O, auf die die Kerne warten müssen. Der Takt lässt sich wegen Leistungsaufnahme und Wärmeentwicklung nicht beliebig erhöhen.</p>
+<p><b>b)</b> Amdahlsches Gesetz: S = 1 / ((1 − p) + p / n)</p>
+<p>Rechenweg für p = 0,75 und n = 8: S = 1 / (0,25 + 0,75/8) = 1 / 0,34375 ≈ 2,91</p>
+<table>
+<tr><th>p \ n</th><th>2</th><th>4</th><th>8</th><th>16</th></tr>
+<tr><td>25 %</td><td>1,14</td><td>1,23</td><td>1,28</td><td>1,31</td></tr>
+<tr><td>50 %</td><td>1,33</td><td>1,60</td><td>1,78</td><td>1,88</td></tr>
+<tr><td>75 %</td><td>1,60</td><td>2,29</td><td>2,91</td><td>3,37</td></tr>
+</table>
+
+<h2>Aufgabe 3</h2>
+<p><b>1)</b> Das Java-Programm <code>Counter</code> zählt in den Testdaten (2000 Java-Dateien, ca. 10,6 Mio. Zeilen) alle Zeilen in ca. 1630 ms.</p>
+<p><b>2)</b> <code>java/ParallelCounter.java</code> sammelt zuerst alle passenden Dateien. Danach verteilt ein Thread-Pool mit n Threads die Dateien auf die Threads, und die Teilsummen werden am Ende addiert. Aufruf: <code>java ParallelCounter &lt;Ordner&gt; &lt;Regex&gt; &lt;Threads&gt;</code></p>
+<p><b>3)</b> Messungen (Ryzen 9 5950X, 16 Kerne / 32 Threads, Samsung 970 EVO SSD, Testdaten 826 MB, Median aus 5 Läufen). Gemessen wurde mit warmem Dateicache, die Daten lagen also bereits im RAM:</p>
+<table>
+<tr><th>Threads</th><th>Zeit</th><th>Speedup</th></tr>
+<tr><td>sequentiell</td><td>1634 ms</td><td>1,00</td></tr>
+<tr><td>1</td><td>1704 ms</td><td>0,96</td></tr>
+<tr><td>2</td><td>952 ms</td><td>1,72</td></tr>
+<tr><td>4</td><td>588 ms</td><td>2,78</td></tr>
+<tr><td>8</td><td>469 ms</td><td>3,48</td></tr>
+<tr><td>16</td><td>455 ms</td><td>3,59</td></tr>
+<tr><td>32</td><td>464 ms</td><td>3,52</td></tr>
+<tr><td>64</td><td>ca. 1400–2300 ms</td><td>≈ 1</td></tr>
+</table>
+<p>Beobachtungen: Bis 8 Threads wird das Programm deutlich schneller, aber nicht linear. Ab 8 Threads bleibt der Speedup bei etwa 3,5, weil das Sammeln der Dateien sequentiell ist und sich alle Threads Speicher und Dateisystem teilen. Mit mehr Threads als logischen Kernen (64) wird es wieder langsamer, weil die Threads um die Kerne konkurrieren und mehr Overhead entsteht.</p>
+</body></html>
