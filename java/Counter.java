@@ -3,49 +3,70 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-// Das Programm erwartet als Parameter zuerst den Dateipfad, danach eine regular expression zum Datentyp.
-// Ich würde empfehlen ".*\.java" zu verwenden
 public class Counter {
 
-	public static void main(String[] args) throws IOException {
-		assert (args.length == 2);
+    public static void main(String[] args) throws IOException {
 
-		long startTime = System.nanoTime();
+        assert (args.length == 3);
 
-		long totalLines = countLinesInAllFiles(args[0], args[1]);
+        long startTime = System.nanoTime();
 
-		long endTime = System.nanoTime();
+        long totalLines = countLinesInAllFiles(
+                args[0], args[1], Integer.parseInt(args[2]));
 
-		System.out.println("Anzahl Zeilen: " + totalLines);
-		System.out.println("Benötigte Zeit: "
-				+ (endTime - startTime) / 1_000_000.0 + " ms");
-	}
+        long endTime = System.nanoTime();
 
-	public static long countLines(String fileName) throws IOException {
-		try (Stream<String> lines = Files.lines(Paths.get(fileName))) {
-			return lines.count();
-		}
-	}
+        System.out.println("Anzahl Zeilen: " + totalLines);
+        System.out.println("Verwendete Threads: " + args[2]);
+        System.out.println("Benötigte Zeit: "
+                + (endTime - startTime) / 1_000_000.0 + " ms");
+    }
 
-	public static long countLinesInAllFiles(String folderPath, String regex)
-			throws IOException {
-		Pattern pattern = Pattern.compile(regex);
+    public static long countLines(String fileName) throws IOException {
+        try (Stream<String> lines = Files.lines(Paths.get(fileName))) {
+            return lines.count();
+        }
+    }
 
-		try (Stream<Path> paths = Files.walk(Paths.get(folderPath))) {
-			return paths
-					.filter(Files::isRegularFile)
-					.filter(path -> pattern.matcher(path.toString()).matches())
-					.mapToLong(path -> {
-						try {
-							return countLines(path.toString());
-						} catch (IOException e) {
-							throw new UncheckedIOException(e);
-						}
-					})
-					.sum();
-		}
-	}
+    public static long countLinesInAllFiles(
+            String folderPath, String regex, int numberOfThreads)
+            throws IOException {
+
+        Pattern pattern = Pattern.compile(regex);
+
+        ForkJoinPool pool = new ForkJoinPool(numberOfThreads);
+
+        try {
+            return pool.submit(() -> {
+
+                try (Stream<Path> paths = Files.walk(Paths.get(folderPath))) {
+                    return paths
+                            .parallel()
+                            .filter(Files::isRegularFile)
+                            .filter(path -> pattern.matcher(path.toString()).matches())
+                            .mapToLong(path -> {
+                                try {
+                                    return countLines(path.toString());
+                                } catch (IOException e) {
+                                    throw new UncheckedIOException(e);
+                                }
+                            })
+                            .sum();
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
+                }
+
+            }).get();
+
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
