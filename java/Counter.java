@@ -15,6 +15,11 @@ public class Counter {
 
 		long startTime = System.nanoTime();
 
+		if(args.length != 2) {
+			System.out.println("Bitte geben Sie einen Dateipfad und eine regular expression \noder einen Ordnerpfad und eine regular expression an.");
+			return;
+		}
+
 		long totalLines = countLinesInAllFiles(args[0], args[1]);
 
 		long endTime = System.nanoTime();
