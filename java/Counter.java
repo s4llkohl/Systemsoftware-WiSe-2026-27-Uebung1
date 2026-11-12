@@ -6,8 +6,6 @@ import java.nio.file.Paths;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-// Das Programm erwartet als Parameter zuerst den Dateipfad, danach eine regular expression zum Datentyp.
-// Ich würde empfehlen ".*\.java" zu verwenden
 public class Counter {
 
 	public static void main(String[] args) throws IOException {
@@ -37,6 +35,7 @@ public class Counter {
 		try (Stream<Path> paths = Files.walk(Paths.get(folderPath))) {
 			return paths
 					.filter(Files::isRegularFile)
+                    .parallel()
 					.filter(path -> pattern.matcher(path.toString()).matches())
 					.mapToLong(path -> {
 						try {
