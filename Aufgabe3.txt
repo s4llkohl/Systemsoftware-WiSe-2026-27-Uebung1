@@ -1,0 +1,5 @@
+Die Ergebnisse zeigen, dass die parallelisierte Variante deutlich schneller ist als das ursprüngliche Programm. 
+Die beste gemessene Laufzeit wurde mit zwei Threads erreicht (988,996 ms).
+
+Eine weitere Erhöhung der Thread-Anzahl führte zu keiner zusätzlichen Beschleunigung. 
+Dies liegt unter anderem daran, dass alle Threads auf dieselbe Festplatte zugreifen und dadurch Engpässe bei den Lesezugriffen entstehen können. Außerdem verursacht die Verwaltung zusätzlicher Threads einen gewissen Aufwand.

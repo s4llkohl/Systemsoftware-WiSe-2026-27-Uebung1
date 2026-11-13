@@ -1,0 +1,14 @@
+Prozess:
+
+Ein Prozess ist ein laufendes Programm. Während ein Programm nur aus gespeicherten Anweisungen besteht, besitzt ein Prozess zusätzlich eigene Ressourcen, beispielsweise einen Speicherbereich, geöffnete Dateien und weitere Verwaltungsinformationen. Ein Prozess kann einen oder mehrere Threads enthalten.
+
+Thread:
+
+Ein Thread ist ein Ausführungsstrang in einem Prozess. Threads dühren die Anweisungen eines Prozessses aus. Es kann mehrere Threads geben, die nebeneinader laufen und sich Ressourcen teilen.
+
+
+Programm:
+
+Ein Programm ist eine Anreihung von Befehlen, die auf einem Computer gespeichert wurden. Es isterstmals passiv und kann durch Ausführung aktiv werden. Ein Programm wird vom Computer als Prozess ausgeführt.
+
+

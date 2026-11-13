@@ -1,0 +1,25 @@
+a)
+
+Mehr Kerne können einen prozess zwar beschleunigen, aber irgendwann ist die Beschleunigung nicht mehr rleevant.
+Das liegt unter anderem an den nicht parallelisierbaren Prozessen, die immer eine gewisse Mindestlaufzeit eines Prozesses garantieren.
+Außerdem bstellt die Anzahl an Threads bei mehreren kernen ebenfalls ein Problem dar, da diese Threads nun synchronisiert werden müssen, um keine Probleme auszulösen.
+
+b)
+
+2 Kerne, Parallelisierbarer Anteil 25%:
+
+1/[(1-0,25)+(0,25/2)] = 1,14
+
+4 Kerne, Parallelisierbarer Anteil 25%: 1,23
+8 Kerne, Parallelisierbarer Anteil 25%: 1,28
+16 Kerne, Parallelisierbarer Anteil 25%: 1,31
+
+2 Kerne, Parallelisierbarer Anteil 50%: 1,33
+4 Kerne, Parallelisierbarer Anteil 50%: 1,6
+8 Kerne, Parallelisierbarer Anteil 50%: 1,78
+16 Kerne, Parallelisierbarer Anteil 50%: 1,88
+
+2 Kerne, Parallelisierbarer Anteil 75%: 1,6
+4 Kerne, Parallelisierbarer Anteil 75%: 2,29
+8 Kerne, Parallelisierbarer Anteil 75%: 2,91
+16 Kerne, Parallelisierbarer Anteil 75%: 3,37
