@@ -1,0 +1,22 @@
+Aufgabe 1
+
+Ein Programm ist eine Datei in der Code gespeichert ist. Ein Prozess ist eine Instanz eines Programms. Ein Programm könnte mehrere Prozesse starten. Jeder Prozess hat mindestens einen Thread, den Hauptthread, und kann bei Bedarf weitere Threads erstellen. Jeder Thread ist für die Ausführung einer bestimmten Aufgabe verantwortlich.
+
+Aufgabe 2
+a) Wenn man die Taktung erhöht entsteht mehr Abwärme, ab einer bestimmten Taktung entsteht so viel Abwärme, dass man die nicht mehr schnell genug abtragen kann und das die dabei CPU kaputt geht. Jedes Programm hat einen Sequentiellen Anteil, welcher nicht parallelisierbar ist. Ein Programm kann höchsten so schnell wie der Sequentiellen Anteil werden.
+
+b) n := die Anzahl von Kerne, s := parallelisierbare Anteil eines Programms, speedup = 1/( (1-s) + s/n )
+
+speeduptabelle:
+
+ Anzahl Kerne (unten) | parallelisierbarer Anteil ->	| 25%	| 50%	| 75%
+--------------------------------------------------------------------------------------------
+				2			| 1,14	| 1,33	| 1,6
+				4			| 1,23	| 1,6	| 2,29
+				8			| 1,28	| 1,77	| 2,91
+				16			| 1,31	| 1,88	| 3,37
+
+
+Aufgabe 3
+
+3)Ab einer bestimmten Anzahl an Threads dauert die parallele Variante länger als die Sequentielle Variante.
