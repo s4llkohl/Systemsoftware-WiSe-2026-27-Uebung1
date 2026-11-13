@@ -23,10 +23,10 @@ def count_lines_in_all_files(folder_path, regex_str):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description='Count lines in all files matching regex in a directory tree.'
+        description='Count lines in all testfiles_1 matching regex in a directory tree.'
     )
     parser.add_argument('folder_path', help='Path to the folder')
-    parser.add_argument('regex_str', help='Regular expression string to match files')
+    parser.add_argument('regex_str', help='Regular expression string to match testfiles_1')
 
     args = parser.parse_args()
 
